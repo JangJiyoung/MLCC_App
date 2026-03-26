@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>교육 신청 카드</title>
+    <!-- SweetAlert2 라이브러리 추가 -->
+    <script src="https://cdn.jsdelivr.net"></script>
     <style>
         :root {
             --primary-color: #4A90E2;
@@ -23,7 +25,7 @@
             padding: 20px;
         }
 
-        /* 메인 화면 */
+        /* 메인 화면 레이아웃 */
         .main-wrapper {
             width: 100%;
             max-width: 450px;
@@ -43,6 +45,7 @@
     
         .title-img { width: 100%; height: auto; display: block; }
 
+        /* 메인 버튼: 이미지 80% 폭, 글자 1.5배 강조 */
         .open-btn {
             width: 80%;
             padding: 18px;
@@ -56,7 +59,7 @@
             box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
         }
 
-        /* 모달 배경 */
+        /* 모달 스타일 */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -68,7 +71,6 @@
             z-index: 1000;
         }
 
-        /* 모달 창 */
         .modal-content {
             background: white;
             width: 95%;
@@ -79,7 +81,7 @@
             overflow-y: auto;
         }
 
-        /* 폼 항목 1.2배 글자 크기 적용 */
+        /* 폼 요소: 나란히 배치 및 글자 1.2배 상향 */
         .form-group {
             display: flex;
             align-items: center;
@@ -107,7 +109,7 @@
         .radio-item { display: flex; align-items: center; gap: 8px; font-size: 18px; cursor: pointer; }
         .radio-item input { width: 20px; height: 20px; }
 
-        /* 동의서 섹션 (요청하신 스타일) */
+        /* 동의서 영역 */
         .agreement-section {
             background: #fdfdfd;
             padding: 15px;
@@ -116,7 +118,7 @@
             border: 1px solid #f0f0f0;
         }
 
-        /* 버튼 */
+        /* 버튼 그룹 */
         .btn-group { display: flex; gap: 10px; margin-top: 15px; }
         .btn-group button {
             flex: 1;
@@ -140,10 +142,10 @@
         <button class="open-btn" onclick="toggleModal(true)">교육 신청하기</button>
     </div>
 
-    <!-- 신청 모달 -->
+    <!-- 모달 창 -->
     <div class="modal-overlay" id="modal">
         <div class="modal-content">
-            <div class="header-container" style="margin-bottom: 20px; border-radius: 10px; box-shadow: none;">
+            <div class="header-container" style="margin-bottom: 20px; border-radius: 10px;">
                 <img src="img/SignUp.jpg" alt="신청 타이틀" class="title-img">
             </div>
 
@@ -174,7 +176,6 @@
 
                 <div class="form-group">
                     <label>전화번호</label>
-                    <!-- 요청하신 ID 적용된 전화번호 필드 -->
                     <input type="tel" id="swal-input-phone" placeholder="010-0000-0000" maxlength="13" required>
                 </div>
 
@@ -183,7 +184,6 @@
                     <input type="text" id="swal-input-address" placeholder="상세주소를 입력하세요" required>
                 </div>
 
-                <!-- 동의서 섹션 -->
                 <div class="agreement-section">
                     <div style="font-size:16px; font-weight:bold; color:#444; margin-bottom:8px;">[개인정보처리동의서]</div>
                     <div style="font-size:14px; color:#777; line-height:1.5; letter-spacing:-0.3px;">
@@ -200,23 +200,20 @@
 
                 <div class="btn-group">
                     <button type="button" class="close-btn" onclick="toggleModal(false)">닫기</button>
-                    <button type="submit" class="submit-btn" id="submit-button">신청합니다</button>
+                    <button type="submit" class="submit-btn">신청합니다</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        // 구글 스크립트 웹앱 URL (GAS 배포 후 생성된 URL을 여기에 입력하세요)
-        const GAS_APP_URL = "https://script.google.com/macros/s/AKfycbx4ePNC2VbDS8O0Jk24LdcIig3bCYjlv9ImlTGLqVDhPrZqSfPp5wyYz6OAbFJiLKzZ_Q/exec";
-
         function toggleModal(show) {
             const modal = document.getElementById('modal');
             modal.style.display = show ? 'flex' : 'none';
             document.body.style.overflow = show ? 'hidden' : 'auto';
         }
 
-        /* 1. 전화번호 하이픈 자동 삽입 로직 (요청사항 반영) */
+        // 전화번호 하이픈 자동 삽입
         const phoneInput = document.getElementById('swal-input-phone');
         phoneInput.addEventListener('input', (e) => {
             let val = e.target.value.replace(/[^0-9]/g, '');
@@ -225,15 +222,11 @@
             else e.target.value = val.slice(0, 3) + '-' + val.slice(3, 7) + '-' + val.slice(7, 11);
         });
 
-        /* 2. 폼 제출 및 구글 시트 연동 로직 (JSON 데이터 전송) */
-        document.getElementById('applyForm').addEventListener('submit', function(e) {
+        // 폼 제출 이벤트
+        document.getElementById('applyForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            const submitBtn = document.getElementById('submit-button');
-            submitBtn.innerText = "전송 중...";
-            submitBtn.disabled = true;
 
-            // JSON 형태로 데이터 수집
+            // JSON 데이터 구성
             const formData = {
                 name: document.getElementById('swal-input-name').value,
                 gender: document.querySelector('input[name="gender"]:checked').value,
@@ -242,26 +235,44 @@
                 address: document.getElementById('swal-input-address').value
             };
 
-            // 구글 시트로 POST 전송
-            fetch(GAS_APP_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            })
-            .then(() => {
-                alert('신청이 완료되었습니다. 감사합니다!');
-                submitBtn.innerText = "신청합니다";
-                submitBtn.disabled = false;
-                e.target.reset();
-                toggleModal(false);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('전송 중 오류가 발생했습니다.');
-                submitBtn.disabled = false;
-            });
+            await sendData(formData);
         });
+
+        // 비동기 전송 함수 (요청하신 로직 적용)
+        async function sendData(formData) {
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbx4ePNC2VbDS8O0Jk24LdcIig3bCYjlv9ImlTGLqVDhPrZqSfPp5wyYz6OAbFJiLKzZ_Q/exec';
+            
+            try {
+                // 전송 중 로딩바 표시
+                Swal.fire({ 
+                    title: '전송 중...', 
+                    allowOutsideClick: false, 
+                    didOpen: () => Swal.showLoading() 
+                });
+
+                // Google Apps Script로 전송
+                await fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                // 전송 성공 알림
+                await Swal.fire({
+                    icon: 'success',
+                    title: '신청 완료!',
+                    text: `${formData.name}님, 교육 신청이 정상적으로 되었습니다.`,
+                    confirmButtonColor: '#4CAF50'
+                });
+                
+                location.reload(); // 페이지 새로고침
+                
+            } catch (error) {
+                console.error('Error!', error.message);
+                Swal.fire('오류 발생', '전송에 실패했습니다. 다시 시도해주세요.', 'error');
+            }
+        }
     </script>
 </body>
 </html>
