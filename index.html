@@ -7,7 +7,6 @@
     <style>
         :root {
             --primary-color: #4A90E2;
-            /* 배경 그라데이션 색상 정의 */
             --bg-gradient: linear-gradient(180deg, #FFF0F5 0%, #FFFFFF 100%);
             --accent-color: #00A86B;
         }
@@ -15,7 +14,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
 
         body {
-            /* 연한 분홍색 -> 흰색 그라데이션 적용 */
             background: var(--bg-gradient);
             background-attachment: fixed;
             display: flex;
@@ -56,10 +54,7 @@
             font-size: 24px;
             font-weight: 900;
             box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
-            transition: transform 0.2s ease;
         }
-
-        .open-btn:active { transform: scale(0.95); }
 
         /* 모달 배경 */
         .modal-overlay {
@@ -76,43 +71,43 @@
         /* 모달 창 */
         .modal-content {
             background: white;
-            width: 90%;
+            width: 95%;
             max-width: 450px; 
             border-radius: 20px;
-            padding: 20px;
+            padding: 25px;
             max-height: 95vh;
             overflow-y: auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        /* 가로 정렬 폼 스타일 */
+        /* 폼 전체 글자 크기 1.2배 상향 */
         .form-group {
             display: flex;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 15px; /* 간격 소폭 확대 */
         }
 
         .form-group label {
-            width: 75px; 
+            width: 90px; /* 글자가 커짐에 따라 레이블 폭 확장 */
             flex-shrink: 0;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 18px; /* 15px * 1.2 = 18px */
             color: #333;
         }
         
         input[type="text"], input[type="tel"], select {
             flex: 1;
-            padding: 12px;
-            border: 1px solid #eee;
+            padding: 14px; /* 입력창 높이 확대 */
+            border: 1px solid #ddd;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 18px; /* 15px * 1.2 = 18px */
             background: #fafafa;
         }
 
         .radio-group { flex: 1; display: flex; gap: 15px; }
-        .radio-item { display: flex; align-items: center; gap: 5px; font-size: 15px; cursor: pointer; }
+        .radio-item { display: flex; align-items: center; gap: 8px; font-size: 18px; cursor: pointer; }
+        .radio-item input { width: 20px; height: 20px; } /* 라디오 버튼 크기 조정 */
 
-        /* 동의서 영역 */
+        /* 동의서 섹션 */
         .agreement-section {
             background: #fdfdfd;
             padding: 15px;
@@ -121,14 +116,14 @@
             border: 1px solid #f0f0f0;
         }
 
-        /* 하단 버튼 */
-        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
+        /* 버튼 스타일 */
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
         .btn-group button {
             flex: 1;
-            padding: 15px;
-            border-radius: 10px;
+            padding: 18px;
+            border-radius: 12px;
             border: none;
-            font-size: 16px;
+            font-size: 19px; /* 버튼 글자도 시원하게 확대 */
             font-weight: bold;
             cursor: pointer;
         }
@@ -139,15 +134,13 @@
 <body>
 
     <div class="main-wrapper">
-        <!-- 메인 이미지 -->
         <div class="header-container">
             <img src="img/SignUp_Main.jpg" alt="메인" class="title-img">
         </div>
-        <!-- 1.5배 강조된 버튼 -->
         <button class="open-btn" onclick="toggleModal(true)">교육 신청하기</button>
     </div>
 
-    <!-- 모달 창 -->
+    <!-- 신청 모달 -->
     <div class="modal-overlay" id="modal">
         <div class="modal-content">
             <div class="header-container" style="margin-bottom: 20px; border-radius: 10px; box-shadow: none;">
@@ -191,15 +184,15 @@
 
                 <!-- 동의서 섹션 -->
                 <div class="agreement-section">
-                    <div style="font-size:0.75rem; font-weight:bold; color:#444; margin-bottom:5px;">[개인정보처리동의서]</div>
-                    <div style="font-size:0.7rem; color:#777; line-height:1.4; letter-spacing:-0.3px;">
+                    <div style="font-size:16px; font-weight:bold; color:#444; margin-bottom:8px;">[개인정보처리동의서]</div>
+                    <div style="font-size:14px; color:#777; line-height:1.5; letter-spacing:-0.3px;">
                         귀하는 본 설문에 개인정보(이름, 전화번호)가 활용되는 것에 동의합니다. 
                         처리된 개인정보는 세미나 목적으로만 사용되며 [법률 제 148395호]에 의해 다른 용도나 목적으로 사용할 수 없습니다.
                     </div>
                     
-                    <label style="display:flex; align-items:center; margin-top:10px; cursor:pointer; font-size:0.85rem; color:#333; font-weight:bold; line-height:1;">
+                    <label style="display:flex; align-items:center; margin-top:12px; cursor:pointer; font-size:17px; color:#333; font-weight:bold;">
                         <input type="checkbox" id="swal-input-agree" required
-                               style="margin:0 8px 0 0; width:18px; height:18px; accent-color:#00A86B; cursor:pointer; vertical-align:middle;">
+                               style="margin:0 10px 0 0; width:22px; height:22px; accent-color:#00A86B;">
                         <span>동의합니다</span>
                     </label>
                 </div>
