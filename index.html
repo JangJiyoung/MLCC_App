@@ -7,14 +7,17 @@
     <style>
         :root {
             --primary-color: #4A90E2;
-            --bg-color: #f4f7f9;
-            --accent-color: #00A86B; /* 동의 체크박스 색상 */
+            /* 배경 그라데이션 색상 정의 */
+            --bg-gradient: linear-gradient(180deg, #FFF0F5 0%, #FFFFFF 100%);
+            --accent-color: #00A86B;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
 
         body {
-            background-color: var(--bg-color);
+            /* 연한 분홍색 -> 흰색 그라데이션 적용 */
+            background: var(--bg-gradient);
+            background-attachment: fixed;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -36,7 +39,7 @@
             margin-bottom: 25px;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
             line-height: 0;
         }
     
@@ -53,21 +56,24 @@
             font-size: 24px;
             font-weight: 900;
             box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+            transition: transform 0.2s ease;
         }
+
+        .open-btn:active { transform: scale(0.95); }
 
         /* 모달 배경 */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.6);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
 
-        /* 모달 창: 이미지 폭(450px)에 최적화 */
+        /* 모달 창 */
         .modal-content {
             background: white;
             width: 90%;
@@ -76,6 +82,7 @@
             padding: 20px;
             max-height: 95vh;
             overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         /* 가로 정렬 폼 스타일 */
@@ -86,38 +93,32 @@
         }
 
         .form-group label {
-            width: 75px; /* 항목 이름 너비 고정 */
+            width: 75px; 
             flex-shrink: 0;
             font-weight: bold;
             font-size: 15px;
             color: #333;
         }
         
-        .form-group input, 
-        .form-group select,
-        .form-group .radio-group {
-            flex: 1;
-        }
-
         input[type="text"], input[type="tel"], select {
-            padding: 10px;
-            border: 1px solid #ddd;
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #eee;
             border-radius: 8px;
             font-size: 15px;
-            width: 100%;
             background: #fafafa;
         }
 
-        .radio-group { display: flex; gap: 15px; }
+        .radio-group { flex: 1; display: flex; gap: 15px; }
         .radio-item { display: flex; align-items: center; gap: 5px; font-size: 15px; cursor: pointer; }
 
-        /* 동의서 영역 (보내주신 스타일 적용) */
+        /* 동의서 영역 */
         .agreement-section {
-            background: #f8f9fa;
+            background: #fdfdfd;
             padding: 15px;
             border-radius: 10px;
             margin: 20px 0;
-            border: 1px solid #eee;
+            border: 1px solid #f0f0f0;
         }
 
         /* 하단 버튼 */
@@ -132,27 +133,28 @@
             cursor: pointer;
         }
         .submit-btn { background: var(--primary-color); color: white; }
-        .close-btn { background: #eee; color: #444; }
+        .close-btn { background: #f0f0f0; color: #666; }
     </style>
 </head>
 <body>
 
     <div class="main-wrapper">
+        <!-- 메인 이미지 -->
         <div class="header-container">
             <img src="img/SignUp_Main.jpg" alt="메인" class="title-img">
         </div>
+        <!-- 1.5배 강조된 버튼 -->
         <button class="open-btn" onclick="toggleModal(true)">교육 신청하기</button>
     </div>
 
+    <!-- 모달 창 -->
     <div class="modal-overlay" id="modal">
         <div class="modal-content">
-            <!-- 모달 내부 타이틀 이미지 -->
-            <div class="header-container" style="margin-bottom: 20px; border-radius: 10px;">
-                <img src="img/SignUp.jpg" alt="타이틀" class="title-img">
+            <div class="header-container" style="margin-bottom: 20px; border-radius: 10px; box-shadow: none;">
+                <img src="img/SignUp.jpg" alt="신청 타이틀" class="title-img">
             </div>
 
             <form id="applyForm">
-                <!-- 항목 나란히 배치 -->
                 <div class="form-group">
                     <label>성명</label>
                     <input type="text" placeholder="성함을 입력하세요" required>
@@ -187,7 +189,7 @@
                     <input type="text" placeholder="상세주소를 입력하세요" required>
                 </div>
 
-                <!-- 개인정보처리동의서 (보내주신 코드 반영) -->
+                <!-- 동의서 섹션 -->
                 <div class="agreement-section">
                     <div style="font-size:0.75rem; font-weight:bold; color:#444; margin-bottom:5px;">[개인정보처리동의서]</div>
                     <div style="font-size:0.7rem; color:#777; line-height:1.4; letter-spacing:-0.3px;">
@@ -219,12 +221,11 @@
 
         document.getElementById('applyForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            // 동의 체크박스 확인
             if(!document.getElementById('swal-input-agree').checked) {
                 alert('개인정보 동의에 체크해 주세요.');
                 return;
             }
-            alert('신청이 성공적으로 완료되었습니다.');
+            alert('신청이 성공적으로 접수되었습니다!');
             toggleModal(false);
         });
     </script>
