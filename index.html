@@ -205,22 +205,57 @@
         </div>
     </div>
 
+    <!-- 위 스타일과 HTML 구조는 동일하게 유지 -->
     <script>
+        // 1단계에서 복사한 웹앱 URL을 여기에 넣으세요.
+        const GAS_APP_URL = "여기에_구글_스크립트_배포_URL을_붙여넣으세요";
+    
         function toggleModal(show) {
             const modal = document.getElementById('modal');
             modal.style.display = show ? 'flex' : 'none';
             document.body.style.overflow = show ? 'hidden' : 'auto';
         }
-
+    
         document.getElementById('applyForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            if(!document.getElementById('swal-input-agree').checked) {
-                alert('개인정보 동의에 체크해 주세요.');
-                return;
-            }
-            alert('신청이 성공적으로 접수되었습니다!');
-            toggleModal(false);
+            
+            // 버튼 로딩 상태 표시
+            const submitBtn = e.target.querySelector('.submit-btn');
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = "처리 중...";
+            submitBtn.disabled = true;
+    
+            // 폼 데이터를 JSON 객체로 생성
+            const formData = {
+                name: e.target[0].value,
+                gender: e.target.querySelector('input[name="gender"]:checked').value,
+                age: e.target[2].value,
+                phone: e.target[3].value,
+                address: e.target[4].value
+            };
+    
+            // 구글 시트로 JSON 데이터 전송
+            fetch(GAS_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors', // CORS 정책 우회 (GAS 전용)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(() => {
+                alert('신청이 성공적으로 구글 시트에 저장되었습니다!');
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+                e.target.reset(); // 폼 초기화
+                toggleModal(false);
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert('오류가 발생했습니다. 다시 시도해주세요.');
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+            });
         });
     </script>
+
 </body>
 </html>
