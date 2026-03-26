@@ -262,8 +262,10 @@
                 await Swal.fire({
                     icon: 'success',
                     title: '신청 완료!',
-                    text: `${formData.name}님, 교육 신청이 정상적으로 되었습니다.`,
-                    confirmButtonColor: '#4CAF50'
+                    // HTML 형식을 사용하여 이름과 문구를 줄바꿈 처리
+                    html: `<b style="font-size:1.2rem;">${formData.name}님</b><br><br>교육 신청이 정상적으로 되었습니다.`,
+                    confirmButtonColor: '#4A90E2',
+                    confirmButtonText: '확인'
                 });
                 
                 location.reload(); // 페이지 새로고침
