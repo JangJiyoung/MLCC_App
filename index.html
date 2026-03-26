@@ -8,6 +8,7 @@
         :root {
             --primary-color: #4A90E2;
             --bg-color: #f4f7f9;
+            --accent-color: #00A86B; /* 동의 체크박스 색상 */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
@@ -24,7 +25,7 @@
         /* 메인 화면 */
         .main-wrapper {
             width: 100%;
-            max-width: 450px; /* 이미지의 최대 폭 */
+            max-width: 450px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -51,6 +52,7 @@
             cursor: pointer;
             font-size: 24px;
             font-weight: 900;
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
         }
 
         /* 모달 배경 */
@@ -61,15 +63,15 @@
             background: rgba(0, 0, 0, 0.7);
             display: none;
             justify-content: center;
-            align-items: center; /* 중앙 정렬 */
+            align-items: center;
             z-index: 1000;
         }
 
-        /* 모달 창: 이미지 폭에 맞춰 너비 고정 */
+        /* 모달 창: 이미지 폭(450px)에 최적화 */
         .modal-content {
             background: white;
             width: 90%;
-            max-width: 450px; /* 이미지 폭과 동일하게 설정 */
+            max-width: 450px; 
             border-radius: 20px;
             padding: 20px;
             max-height: 95vh;
@@ -79,12 +81,12 @@
         /* 가로 정렬 폼 스타일 */
         .form-group {
             display: flex;
-            align-items: center; /* 세로 중앙 */
+            align-items: center;
             margin-bottom: 12px;
         }
 
         .form-group label {
-            width: 80px; /* 레이블 너비 고정 */
+            width: 75px; /* 항목 이름 너비 고정 */
             flex-shrink: 0;
             font-weight: bold;
             font-size: 15px;
@@ -94,37 +96,36 @@
         .form-group input, 
         .form-group select,
         .form-group .radio-group {
-            flex: 1; /* 남은 공간 모두 차지 */
+            flex: 1;
         }
 
         input[type="text"], input[type="tel"], select {
             padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 15px;
             width: 100%;
+            background: #fafafa;
         }
 
         .radio-group { display: flex; gap: 15px; }
-        .radio-item { display: flex; align-items: center; gap: 5px; font-size: 15px; }
+        .radio-item { display: flex; align-items: center; gap: 5px; font-size: 15px; cursor: pointer; }
 
-        /* 약관 및 버튼 */
-        .agreement-box {
+        /* 동의서 영역 (보내주신 스타일 적용) */
+        .agreement-section {
             background: #f8f9fa;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            line-height: 1.5;
-            color: #666;
-            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #eee;
         }
-        .check-group { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; }
 
-        .btn-group { display: flex; gap: 10px; }
+        /* 하단 버튼 */
+        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
         .btn-group button {
             flex: 1;
-            padding: 14px;
-            border-radius: 8px;
+            padding: 15px;
+            border-radius: 10px;
             border: none;
             font-size: 16px;
             font-weight: bold;
@@ -145,14 +146,15 @@
 
     <div class="modal-overlay" id="modal">
         <div class="modal-content">
-            <!-- 모달 상단 이미지 -->
-            <div class="header-container" style="margin-bottom: 15px; border-radius: 10px;">
+            <!-- 모달 내부 타이틀 이미지 -->
+            <div class="header-container" style="margin-bottom: 20px; border-radius: 10px;">
                 <img src="img/SignUp.jpg" alt="타이틀" class="title-img">
             </div>
 
             <form id="applyForm">
+                <!-- 항목 나란히 배치 -->
                 <div class="form-group">
-                    <label>이름</label>
+                    <label>성명</label>
                     <input type="text" placeholder="성함을 입력하세요" required>
                 </div>
 
@@ -167,7 +169,7 @@
                 <div class="form-group">
                     <label>나이</label>
                     <select required>
-                        <option value="">선택</option>
+                        <option value="">선택하세요</option>
                         <option value="30대">30대</option>
                         <option value="40대">40대</option>
                         <option value="50대">50대</option>
@@ -182,15 +184,21 @@
 
                 <div class="form-group">
                     <label>주소</label>
-                    <input type="text" placeholder="상세주소 입력" required>
+                    <input type="text" placeholder="상세주소를 입력하세요" required>
                 </div>
 
-                <div class="agreement-box">
-                    <label class="check-group">
-                        <input type="checkbox" required>
-                        <span>
-                            귀하는 본 설문에 개인정보 활용에 동의합니다. 처리된 정보는 세미나 목적으로만 사용되며 법률에 의해 보호됩니다.
-                        </span>
+                <!-- 개인정보처리동의서 (보내주신 코드 반영) -->
+                <div class="agreement-section">
+                    <div style="font-size:0.75rem; font-weight:bold; color:#444; margin-bottom:5px;">[개인정보처리동의서]</div>
+                    <div style="font-size:0.7rem; color:#777; line-height:1.4; letter-spacing:-0.3px;">
+                        귀하는 본 설문에 개인정보(이름, 전화번호)가 활용되는 것에 동의합니다. 
+                        처리된 개인정보는 세미나 목적으로만 사용되며 [법률 제 148395호]에 의해 다른 용도나 목적으로 사용할 수 없습니다.
+                    </div>
+                    
+                    <label style="display:flex; align-items:center; margin-top:10px; cursor:pointer; font-size:0.85rem; color:#333; font-weight:bold; line-height:1;">
+                        <input type="checkbox" id="swal-input-agree" required
+                               style="margin:0 8px 0 0; width:18px; height:18px; accent-color:#00A86B; cursor:pointer; vertical-align:middle;">
+                        <span>동의합니다</span>
                     </label>
                 </div>
 
@@ -211,7 +219,12 @@
 
         document.getElementById('applyForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('신청이 완료되었습니다.');
+            // 동의 체크박스 확인
+            if(!document.getElementById('swal-input-agree').checked) {
+                alert('개인정보 동의에 체크해 주세요.');
+                return;
+            }
+            alert('신청이 성공적으로 완료되었습니다.');
             toggleModal(false);
         });
     </script>
