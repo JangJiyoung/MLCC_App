@@ -21,54 +21,39 @@
             padding: 20px;
         }
 
-        /* 메인 화면 컨테이너 */
+        /* 메인 화면 */
         .main-wrapper {
             width: 100%;
-            max-width: 500px; /* 이미지 최대 폭 제한 */
+            max-width: 450px; /* 이미지의 최대 폭 */
             display: flex;
             flex-direction: column;
-            align-items: center; /* 가로 중앙 정렬 */
+            align-items: center;
         }
 
-        /* 메인 이미지 스타일 */
         .header-container {
             width: 100%;
-            margin-bottom: 25px; /* 이미지와 버튼 사이 간격 */
+            margin-bottom: 25px;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
             line-height: 0;
         }
     
-        .title-img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+        .title-img { width: 100%; height: auto; display: block; }
 
-        /* 수정된 가입신청 버튼 */
         .open-btn {
-            width: 80%; /* 이미지 폭의 80% */
-            padding: 20px;
+            width: 80%;
+            padding: 18px;
             background: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 50px; /* 둥근 버튼 스타일 */
+            border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
-            
-            /* 글자 강조 및 크기 조절 */
-            font-size: 24px; /* 기존 약 16px의 1.5배 */
-            font-weight: 900; /* 아주 굵게 강조 */
-            letter-spacing: -0.5px;
-            transition: transform 0.2s;
+            font-size: 24px;
+            font-weight: 900;
         }
 
-        .open-btn:active {
-            transform: scale(0.95); /* 터치 시 눌리는 효과 */
-        }
-
-        /* 모달 공통 스타일 (기존 유지) */
+        /* 모달 배경 */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -76,81 +61,93 @@
             background: rgba(0, 0, 0, 0.7);
             display: none;
             justify-content: center;
-            align-items: flex-end;
+            align-items: center; /* 중앙 정렬 */
             z-index: 1000;
         }
 
+        /* 모달 창: 이미지 폭에 맞춰 너비 고정 */
         .modal-content {
             background: white;
-            width: 100%;
-            max-width: 500px;
-            border-radius: 25px 25px 0 0;
-            padding: 25px;
-            max-height: 92vh;
+            width: 90%;
+            max-width: 450px; /* 이미지 폭과 동일하게 설정 */
+            border-radius: 20px;
+            padding: 20px;
+            max-height: 95vh;
             overflow-y: auto;
-            animation: slideUp 0.3s ease-out;
         }
 
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
+        /* 가로 정렬 폼 스타일 */
+        .form-group {
+            display: flex;
+            align-items: center; /* 세로 중앙 */
+            margin-bottom: 12px;
         }
 
-        .form-group { margin-bottom: 18px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 15px; }
+        .form-group label {
+            width: 80px; /* 레이블 너비 고정 */
+            flex-shrink: 0;
+            font-weight: bold;
+            font-size: 15px;
+            color: #333;
+        }
         
+        .form-group input, 
+        .form-group select,
+        .form-group .radio-group {
+            flex: 1; /* 남은 공간 모두 차지 */
+        }
+
         input[type="text"], input[type="tel"], select {
-            width: 100%;
-            padding: 14px;
+            padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
+            border-radius: 6px;
+            font-size: 15px;
+            width: 100%;
         }
 
         .radio-group { display: flex; gap: 15px; }
-        .radio-item { display: flex; align-items: center; gap: 8px; font-size: 16px; }
+        .radio-item { display: flex; align-items: center; gap: 5px; font-size: 15px; }
 
+        /* 약관 및 버튼 */
         .agreement-box {
-            background: #f1f3f5;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 13px;
-            line-height: 1.6;
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            line-height: 1.5;
             color: #666;
-            margin: 20px 0;
+            margin: 15px 0;
         }
+        .check-group { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; }
 
-        .check-group { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
-
-        .btn-group { display: flex; gap: 12px; }
+        .btn-group { display: flex; gap: 10px; }
         .btn-group button {
             flex: 1;
-            padding: 16px;
-            border-radius: 12px;
+            padding: 14px;
+            border-radius: 8px;
             border: none;
             font-size: 16px;
             font-weight: bold;
+            cursor: pointer;
         }
         .submit-btn { background: var(--primary-color); color: white; }
-        .close-btn { background: #e9ecef; color: #495057; }
+        .close-btn { background: #eee; color: #444; }
     </style>
 </head>
 <body>
 
     <div class="main-wrapper">
-        <!-- 메인 이미지 -->
         <div class="header-container">
-            <img src="img/SignUp_Main.jpg" alt="메인 배너" class="title-img">
+            <img src="img/SignUp_Main.jpg" alt="메인" class="title-img">
         </div>
-        <!-- 이미지 대비 80% 폭의 강조된 버튼 -->
         <button class="open-btn" onclick="toggleModal(true)">교육 신청하기</button>
     </div>
 
-    <!-- 모달 창 (내용 동일) -->
     <div class="modal-overlay" id="modal">
         <div class="modal-content">
-            <div class="header-container">
-                <img src="img/SignUp.jpg" alt="신청 타이틀" class="title-img">
+            <!-- 모달 상단 이미지 -->
+            <div class="header-container" style="margin-bottom: 15px; border-radius: 10px;">
+                <img src="img/SignUp.jpg" alt="타이틀" class="title-img">
             </div>
 
             <form id="applyForm">
@@ -170,7 +167,7 @@
                 <div class="form-group">
                     <label>나이</label>
                     <select required>
-                        <option value="">선택하세요</option>
+                        <option value="">선택</option>
                         <option value="30대">30대</option>
                         <option value="40대">40대</option>
                         <option value="50대">50대</option>
@@ -185,15 +182,14 @@
 
                 <div class="form-group">
                     <label>주소</label>
-                    <input type="text" placeholder="주소를 입력하세요" required>
+                    <input type="text" placeholder="상세주소 입력" required>
                 </div>
 
                 <div class="agreement-box">
                     <label class="check-group">
                         <input type="checkbox" required>
                         <span>
-                            귀하는 본 설문에 개인정보(이름, 전화번호)가 활용되는 것에 동의합니다. 
-                            처리된 개인정보는 세미나 목적으로만 사용되며 [법률 제 148395호]에 의해 다른 용도나 목적으로 사용할 수 없습니다.
+                            귀하는 본 설문에 개인정보 활용에 동의합니다. 처리된 정보는 세미나 목적으로만 사용되며 법률에 의해 보호됩니다.
                         </span>
                     </label>
                 </div>
@@ -215,7 +211,7 @@
 
         document.getElementById('applyForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('신청이 성공적으로 접수되었습니다.');
+            alert('신청이 완료되었습니다.');
             toggleModal(false);
         });
     </script>
