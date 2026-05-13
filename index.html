@@ -42,22 +42,7 @@
     
         .title-img { width: 100%; height: auto; display: block; }
 
-        .open-btn {
-            width: 90%;
-            padding: 20px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 22px;
-            font-weight: 800;
-            box-shadow: 0 5px 20px rgba(74, 144, 226, 0.3);
-            transition: all 0.2s ease;
-        }
-
-        .open-btn:hover { transform: translateY(-2px); }
-
+        /* 모달 오버레이 */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -86,11 +71,12 @@
             margin-bottom: 18px;
         }
         
+        /* 요청하신 빨간 박스 안의 글씨 스타일 수정 */
         .form-group label {
-            width: 85px; /* 라벨 너비 소폭 조정 */
-            font-weight: 700;
+            width: 85px; 
+            font-weight: 800; /* 기존 700에서 800으로 더 진하게 수정 */
             font-size: 16px;
-            color: #555;
+            color: #222;    /* 기존 #555에서 더 어두운 색상으로 변경 */
             text-align: left;
         }
         
@@ -159,10 +145,9 @@
 
     <div class="main-wrapper">
         <div class="header-container">
-            <!-- image_65d673.png 상단 배너 이미지 사용 -->
-            <img src="img/SignUp_Main.jpg" alt="기억력 향상 프로그램 가입 신청서" class="title-img">
+            <img src="img/SignUp_Main.jpg" alt="메인 배너" class="title-img">
         </div>
-        <button class="open-btn" onclick="toggleModal(true)">신청하기</button>
+        <button class="open-btn" style="width: 90%; padding: 20px; background: var(--primary-color); color: white; border: none; border-radius: 50px; cursor: pointer; font-size: 22px; font-weight: 800;" onclick="toggleModal(true)">신청하기</button>
     </div>
 
     <div class="modal-overlay" id="modal">
@@ -185,7 +170,6 @@
                     </div>
                 </div>
 
-                <!-- 나이 선택창을 출생년도 Edit창으로 변경 -->
                 <div class="form-group">
                     <label>출생년도</label>
                     <input type="text" id="swal-input-birth" placeholder="예) 1975년" required>
@@ -198,7 +182,7 @@
 
                 <div class="form-group">
                     <label>주소</label>
-                    <input type="text" id="swal-input-address" placeholder="상세주소를 입력하세요" required>
+                    <input type="text" id="swal-input-address" placeholder="동, 면까지만 입력해 주세요" required>
                 </div>
 
                 <div class="agreement-section">
@@ -240,46 +224,25 @@
 
         document.getElementById('applyForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-
             const formData = {
                 name: document.getElementById('swal-input-name').value,
                 gender: document.querySelector('input[name="gender"]:checked').value,
-                birthYear: document.getElementById('swal-input-birth').value, // 변경된 부분
+                birthYear: document.getElementById('swal-input-birth').value,
                 phone: document.getElementById('swal-input-phone').value,
                 address: document.getElementById('swal-input-address').value
             };
-
             await sendData(formData);
         });
 
         async function sendData(formData) {
             const scriptURL = 'https://script.google.com/macros/s/AKfycbxsTzHozsy1VJEiVmRjPKEPRrJ-9OBrFHK9zVIzMpy1jM43w0kpjhKdCgtQdhgQrh9g-A/exec';
-            
             try {
-                Swal.fire({ 
-                    title: '제출 중...', 
-                    allowOutsideClick: false, 
-                    didOpen: () => Swal.showLoading() 
-                });
-
-                await fetch(scriptURL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
-                });
-
+                Swal.fire({ title: '제출 중...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+                await fetch(scriptURL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
                 setTimeout(async () => {
-                    await Swal.fire({
-                        icon: 'success',
-                        title: '신청 완료!',
-                        html: `<b style="color:#4A90E2;">${formData.name}님</b>의 신청이 정상적으로 접수되었습니다.`,
-                        confirmButtonColor: '#4A90E2',
-                        confirmButtonText: '확인'
-                    });
+                    await Swal.fire({ icon: 'success', title: '신청 완료!', html: `<b>${formData.name}님</b>의 신청이 접수되었습니다.`, confirmButtonColor: '#4A90E2' });
                     location.reload();
                 }, 1000);
-                
             } catch (error) {
                 Swal.fire('오류 발생', '다시 시도해주세요.', 'error');
             }
